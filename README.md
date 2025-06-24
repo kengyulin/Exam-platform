@@ -8,8 +8,12 @@ This project demonstrates a simple setup for searching ISMS documents stored in 
    ```bash
    pip install -r backend/requirements.txt
    ```
-2. Ensure Elasticsearch is running locally at `http://localhost:9200` and an index named `docs` exists with documents containing `file_name` and `content` fields.
-3. Start the Flask server:
+2. Ensure Elasticsearch is running locally at `http://localhost:9200`.
+3. Index the contents of the `temp` folder (and all subdirectories) into the `docs` index:
+   ```bash
+   python backend/indexer.py --dir temp --index docs
+   ```
+4. Start the Flask server:
    ```bash
    python backend/app.py
    ```
