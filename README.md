@@ -6,21 +6,22 @@ Elasticsearch provides powerful full-text search with fuzzy matching, relevance 
 
 ## Backend
 
-1. Install Python dependencies:
+1. Install Python 3 dependencies:
    ```bash
-   pip install -r backend/requirements.txt
-   ```
-   The requirements include `python-docx` so `.docx` files can be parsed during indexing.
+ pip install -r backend/requirements.txt
+  ```
+  The requirements include `python-docx` so `.docx` files can be parsed during indexing.
+   Make sure the `python3` command is available on your system.
 2. Ensure Elasticsearch is running locally at `http://localhost:9200`.
 3. The indexer creates the `docs` index with the built-in Chinese analyzer `smartcn` (or another analyzer if supplied with `--analyzer`).
    The `temp` folder may contain regular text files or `.docx` documents.
    The indexer extracts text from both and loads them into Elasticsearch:
    ```bash
-   python backend/indexer.py --dir temp --index docs
+   python3 backend/indexer.py --dir temp --index docs
    ```
 4. Start the Flask server:
    ```bash
-   python backend/app.py
+   python3 backend/app.py
    ```
 
 Use the `/sync` endpoint to reindex the `temp` directory whenever its

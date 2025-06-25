@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import os
 from elasticsearch import Elasticsearch
 from docx import Document
@@ -41,7 +43,7 @@ def index_directory(
                     with open(file_path, 'r', encoding='utf-8') as f:
                         content = f.read()
             except Exception as e:
-                print(f"Skipping {file_path}: {e}")
+                print("Skipping {0}: {1}".format(file_path, e))
                 continue
             rel = os.path.relpath(file_path, root_dir)
             doc = {
@@ -50,7 +52,7 @@ def index_directory(
                 'content': content
             }
             es.index(index=index_name, body=doc)
-            print(f"Indexed {file_path}")
+            print("Indexed {}".format(file_path))
 
 
 if __name__ == '__main__':
