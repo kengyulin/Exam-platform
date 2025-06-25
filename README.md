@@ -26,6 +26,8 @@ curl -X POST http://localhost:5000/sync
 ```
 
 The `/search` endpoint accepts a query parameter `q` and returns fuzzy matched documents along with their file names.
+Use `/add` to index a new document immediately by posting JSON with `file_name`
+and `content` fields.
 
 ## Frontend
 
@@ -34,7 +36,7 @@ This example React component uses Tailwind for styling and fetches results from 
 1. Install Node dependencies (requires Node.js and npm):
    ```bash
    cd frontend
-   npm install
+   npm install  # installs React, Tailwind and CKEditor packages
    ```
 2. Run the development server:
    ```bash
@@ -44,6 +46,10 @@ This example React component uses Tailwind for styling and fetches results from 
 The page displays a search box and shows matched document titles and excerpts.
 It also has a **Sync** button that triggers a reindex of the `temp` directory
 by calling the `/sync` endpoint.
+
+The React app also exposes a basic WYSIWYG editor powered by CKEditor. Use it to
+enter a file name and rich-text content, then press **Save** to POST the
+document to the `/add` endpoint so that it is immediately indexed.
 
 ## Security Considerations
 

@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 function App() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
+  const [fileName, setFileName] = useState('');
+  const [content, setContent] = useState('');
 
   const sync = async () => {
     await fetch('/sync', { method: 'POST' });
@@ -12,6 +16,16 @@ function App() {
     const res = await fetch(`/search?q=${encodeURIComponent(query)}`);
     const data = await res.json();
     setResults(data);
+  };
+
+  const save = async () => {
+    await fetch('/add', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ file_name: fileName, content })
+    });
+    setFileName('');
+    setContent('');
   };
 
   return (
@@ -35,6 +49,27 @@ function App() {
           </li>
         ))}
       </ul>
+      <div className="my-6">
+        <h2 className="text-xl mb-2">Add Document</h2>
+        <input
+          type="text"
+          placeholder="File name"
+          value={fileName}
+          onChange={(e) => setFileName(e.target.value)}
+          className="border p-2 w-full mb-2"
+        />
+        <CKEditor
+          editor={ClassicEditor}
+          data={content}
+          onChange={(event, editor) => {
+            const data = editor.getData();
+            setContent(data);
+          }}
+        />
+        <button onClick={save} className="bg-purple-600 text-white p-2 mt-2">
+          Save
+        </button>
+      </div>
       <p className="text-sm text-gray-600 mt-4">
         Results are displayed as plain text. React escapes HTML output to help
         prevent XSS. Always upload trusted files to avoid malware or injection

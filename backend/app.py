@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 
 from indexer import index_directory
+from indexer import _ensure_index
 from elasticsearch import Elasticsearch
 
 # Connect to Elasticsearch running on localhost
@@ -33,6 +34,19 @@ def search():
         for hit in result['hits']['hits']
     ]
     return jsonify(hits)
+
+
+@app.route('/add', methods=['POST'])
+def add_document():
+    """Index a new document sent from the editor."""
+    data = request.get_json() or {}
+    file_name = data.get('file_name')
+    content = data.get('content')
+    if not file_name or not content:
+        return jsonify({'error': 'file_name and content required'}), 400
+    _ensure_index(es, 'docs', 'smartcn')
+    es.index(index='docs', body={'file_name': file_name, 'content': content})
+    return jsonify({'status': 'ok'})
 
 
 @app.route('/sync', methods=['POST'])
