@@ -8,6 +8,7 @@ function App() {
   const [facets, setFacets] = useState([]);
   const [fileName, setFileName] = useState('');
   const [content, setContent] = useState('');
+  const [selected, setSelected] = useState(null);
 
   const sync = async () => {
     await fetch('/sync', { method: 'POST' });
@@ -17,6 +18,7 @@ function App() {
     const res = await fetch(`/search?q=${encodeURIComponent(query)}`);
     const data = await res.json();
     setResults(data);
+    setSelected(null);
   };
 
   const loadFacets = async () => {
@@ -49,20 +51,46 @@ function App() {
         <button onClick={sync} className="bg-green-500 text-white p-2">Sync</button>
         <button onClick={loadFacets} className="bg-indigo-500 text-white p-2">Facets</button>
       </div>
-      <ul>
-        {results.map((r, idx) => (
-          <li key={idx} className="mb-2">
-            <h2 className="font-bold">{r.file_name}</h2>
-            <p>{r.content}</p>
-          </li>
-        ))}
-      </ul>
-      {facets.length > 0 && (
-        <ul className="mt-4">
-          {facets.map((f, idx) => (
-            <li key={idx}>{f.folder}: {f.count}</li>
-          ))}
-        </ul>
+
+      {selected ? (
+        <div>
+          <button
+            onClick={() => setSelected(null)}
+            className="bg-gray-300 p-2 mb-2"
+          >
+            Back
+          </button>
+          <h2 className="font-bold text-xl mb-2">{selected.file_name}</h2>
+          <pre className="whitespace-pre-wrap border p-2">
+            {selected.content}
+          </pre>
+        </div>
+      ) : (
+        <>
+          <ul>
+            {results.map((r, idx) => (
+              <li key={idx} className="mb-2 border-b pb-2">
+                <h2 className="font-bold">
+                  {r.file_name}
+                  <button
+                    onClick={() => setSelected(r)}
+                    className="ml-2 text-sm text-blue-600"
+                  >
+                    View
+                  </button>
+                </h2>
+                <p>{r.content.slice(0, 100)}...</p>
+              </li>
+            ))}
+          </ul>
+          {facets.length > 0 && (
+            <ul className="mt-4">
+              {facets.map((f, idx) => (
+                <li key={idx}>{f.folder}: {f.count}</li>
+              ))}
+            </ul>
+          )}
+        </>
       )}
       <div className="my-6">
         <h2 className="text-xl mb-2">Add Document</h2>

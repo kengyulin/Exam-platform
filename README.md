@@ -50,8 +50,9 @@ This example React component uses Tailwind for styling and fetches results from 
    ```
 
 The page displays a search box and shows matched document titles and excerpts.
-It also has a **Sync** button that triggers a reindex of the `temp` directory
-by calling the `/sync` endpoint.
+Each result has a **View** button that opens a simple viewer to read the full
+document content. The interface also has a **Sync** button that triggers a
+reindex of the `temp` directory by calling the `/sync` endpoint.
 
 The React app also exposes a basic WYSIWYG editor powered by CKEditor. Use it to
 enter a file name and rich-text content, then press **Save** to POST the
