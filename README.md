@@ -2,6 +2,8 @@
 
 This project demonstrates a simple setup for searching ISMS documents stored in a `temp` directory using Elasticsearch. The search index uses a Chinese text analyzer so that queries work well with Chinese content. The front-end is written in React with Tailwind CSS, while the back-end uses Python and Flask.
 
+Elasticsearch provides powerful full-text search with fuzzy matching, relevance ranking, faceted aggregations, and near real-time indexing. These capabilities are showcased in this example.
+
 ## Backend
 
 1. Install Python dependencies:
@@ -25,9 +27,13 @@ contents change. For example:
 curl -X POST http://localhost:5000/sync
 ```
 
-The `/search` endpoint accepts a query parameter `q` and returns fuzzy matched documents along with their file names.
-Use `/add` to index a new document immediately by posting JSON with `file_name`
-and `content` fields.
+The `/search` endpoint accepts a query parameter `q` and returns fuzzy matched
+documents along with their file names. Use `/add` to index a new document
+immediately by posting JSON with `file_name` and `content` fields.
+
+The `/facets` endpoint performs a simple faceted search by returning the number
+of documents in each folder. This demonstrates Elasticsearch's aggregation
+features for faceted navigation.
 
 ## Frontend
 

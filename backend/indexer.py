@@ -12,6 +12,7 @@ def _ensure_index(es, index_name, analyzer):
             "mappings": {
                 "properties": {
                     "file_name": {"type": "keyword"},
+                    "folder": {"type": "keyword"},
                     "content": {"type": "text", "analyzer": analyzer},
                 }
             }
@@ -37,8 +38,10 @@ def index_directory(
             except Exception as e:
                 print(f"Skipping {file_path}: {e}")
                 continue
+            rel = os.path.relpath(file_path, root_dir)
             doc = {
-                'file_name': os.path.relpath(file_path, root_dir),
+                'file_name': rel,
+                'folder': os.path.dirname(rel) or '.',
                 'content': content
             }
             es.index(index=index_name, body=doc)

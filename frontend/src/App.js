@@ -5,6 +5,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 function App() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
+  const [facets, setFacets] = useState([]);
   const [fileName, setFileName] = useState('');
   const [content, setContent] = useState('');
 
@@ -16,6 +17,12 @@ function App() {
     const res = await fetch(`/search?q=${encodeURIComponent(query)}`);
     const data = await res.json();
     setResults(data);
+  };
+
+  const loadFacets = async () => {
+    const res = await fetch('/facets');
+    const data = await res.json();
+    setFacets(data);
   };
 
   const save = async () => {
@@ -40,6 +47,7 @@ function App() {
         />
         <button onClick={search} className="bg-blue-500 text-white p-2">Search</button>
         <button onClick={sync} className="bg-green-500 text-white p-2">Sync</button>
+        <button onClick={loadFacets} className="bg-indigo-500 text-white p-2">Facets</button>
       </div>
       <ul>
         {results.map((r, idx) => (
@@ -49,6 +57,13 @@ function App() {
           </li>
         ))}
       </ul>
+      {facets.length > 0 && (
+        <ul className="mt-4">
+          {facets.map((f, idx) => (
+            <li key={idx}>{f.folder}: {f.count}</li>
+          ))}
+        </ul>
+      )}
       <div className="my-6">
         <h2 className="text-xl mb-2">Add Document</h2>
         <input
