@@ -44,3 +44,15 @@ The page displays a search box and shows matched document titles and excerpts.
 It also has a **Sync** button that triggers a reindex of the `temp` directory
 by calling the `/sync` endpoint.
 
+## Security Considerations
+
+The application indexes arbitrary files from the `temp` directory. Ensure that
+only trusted documents are placed in this directory to avoid indexing
+malicious content. React escapes HTML by default when displaying file content,
+which helps mitigate cross-site scripting (XSS) attacks, but additional
+sanitization may be required if you change the rendering logic.
+
+Queries sent to the backend are passed directly to Elasticsearch. While this
+demo does not use SQL, always validate user input and avoid executing
+untrusted commands to guard against injection attacks.
+

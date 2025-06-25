@@ -35,6 +35,11 @@ function App() {
           </li>
         ))}
       </ul>
+      <p className="text-sm text-gray-600 mt-4">
+        Results are displayed as plain text. React escapes HTML output to help
+        prevent XSS. Always upload trusted files to avoid malware or injection
+        attacks.
+      </p>
     </div>
   );
 }
