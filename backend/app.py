@@ -1,4 +1,6 @@
 from flask import Flask, request, jsonify
+
+from indexer import index_directory
 from elasticsearch import Elasticsearch
 
 # Connect to Elasticsearch running on localhost
@@ -31,6 +33,13 @@ def search():
         for hit in result['hits']['hits']
     ]
     return jsonify(hits)
+
+
+@app.route('/sync', methods=['POST'])
+def sync():
+    """Reindex the temp directory into Elasticsearch."""
+    index_directory('temp', 'docs')
+    return jsonify({'status': 'ok'})
 
 if __name__ == '__main__':
     app.run(debug=True)

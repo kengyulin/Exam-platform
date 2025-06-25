@@ -4,6 +4,10 @@ function App() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
 
+  const sync = async () => {
+    await fetch('/sync', { method: 'POST' });
+  };
+
   const search = async () => {
     const res = await fetch(`/search?q=${encodeURIComponent(query)}`);
     const data = await res.json();
@@ -21,6 +25,7 @@ function App() {
           className="border p-2 flex-grow"
         />
         <button onClick={search} className="bg-blue-500 text-white p-2">Search</button>
+        <button onClick={sync} className="bg-green-500 text-white p-2">Sync</button>
       </div>
       <ul>
         {results.map((r, idx) => (

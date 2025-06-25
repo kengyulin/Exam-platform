@@ -18,6 +18,12 @@ This project demonstrates a simple setup for searching ISMS documents stored in 
    python backend/app.py
    ```
 
+Use the `/sync` endpoint to reindex the `temp` directory whenever its
+contents change. For example:
+```bash
+curl -X POST http://localhost:5000/sync
+```
+
 The `/search` endpoint accepts a query parameter `q` and returns fuzzy matched documents along with their file names.
 
 ## Frontend
@@ -35,4 +41,6 @@ This example React component uses Tailwind for styling and fetches results from 
    ```
 
 The page displays a search box and shows matched document titles and excerpts.
+It also has a **Sync** button that triggers a reindex of the `temp` directory
+by calling the `/sync` endpoint.
 
