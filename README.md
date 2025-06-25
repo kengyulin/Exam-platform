@@ -1,6 +1,6 @@
 # ISMS Document Search
 
-This project demonstrates a simple setup for searching ISMS documents stored in a `temp` directory using Elasticsearch. The front-end is written in React with Tailwind CSS, while the back-end uses Python and Flask.
+This project demonstrates a simple setup for searching ISMS documents stored in a `temp` directory using Elasticsearch. The search index uses a Chinese text analyzer so that queries work well with Chinese content. The front-end is written in React with Tailwind CSS, while the back-end uses Python and Flask.
 
 ## Backend
 
@@ -9,7 +9,8 @@ This project demonstrates a simple setup for searching ISMS documents stored in 
    pip install -r backend/requirements.txt
    ```
 2. Ensure Elasticsearch is running locally at `http://localhost:9200`.
-3. Index the contents of the `temp` folder (and all subdirectories) into the `docs` index:
+3. The indexer creates the `docs` index with the built-in Chinese analyzer `smartcn` (or another analyzer if supplied with `--analyzer`).
+   Index the contents of the `temp` folder (and all subdirectories) into this index:
    ```bash
    python backend/indexer.py --dir temp --index docs
    ```
