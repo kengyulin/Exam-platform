@@ -10,9 +10,11 @@ Elasticsearch provides powerful full-text search with fuzzy matching, relevance 
    ```bash
    pip install -r backend/requirements.txt
    ```
+   The requirements include `python-docx` so `.docx` files can be parsed during indexing.
 2. Ensure Elasticsearch is running locally at `http://localhost:9200`.
 3. The indexer creates the `docs` index with the built-in Chinese analyzer `smartcn` (or another analyzer if supplied with `--analyzer`).
-   Index the contents of the `temp` folder (and all subdirectories) into this index:
+   The `temp` folder may contain regular text files or `.docx` documents.
+   The indexer extracts text from both and loads them into Elasticsearch:
    ```bash
    python backend/indexer.py --dir temp --index docs
    ```

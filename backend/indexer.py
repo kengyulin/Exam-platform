@@ -1,5 +1,6 @@
 import os
 from elasticsearch import Elasticsearch
+from docx import Document
 
 
 def _ensure_index(es, index_name, analyzer):
@@ -33,8 +34,12 @@ def index_directory(
         for fname in filenames:
             file_path = os.path.join(dirpath, fname)
             try:
-                with open(file_path, 'r', encoding='utf-8') as f:
-                    content = f.read()
+                if fname.lower().endswith('.docx'):
+                    doc_obj = Document(file_path)
+                    content = "\n".join(p.text for p in doc_obj.paragraphs)
+                else:
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        content = f.read()
             except Exception as e:
                 print(f"Skipping {file_path}: {e}")
                 continue
